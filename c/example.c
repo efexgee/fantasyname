@@ -173,7 +173,7 @@ int main(int argc, char **argv) {
     if (argc < 2 || argc > 3) {
         printf("Usage: %s <num> <pattern>\n", argv[0]);
         printf("  num       number of names to generate\n");
-        printf("  pattern   template for names to generate\n");
+        printf("  pattern   template for names to generate (the %c character may be used as a literal ')\n", ALT_SINGLE_QUOTE);
         exit(EXIT_FAILURE);
     } else if (argc == 2) {
         pattern = argv[1];

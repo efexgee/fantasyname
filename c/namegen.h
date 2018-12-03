@@ -40,6 +40,9 @@
 #ifndef NAMEGEN_H
 #define NAMEGEN_H
 
+/* Accept a stand-in for a single quote to make command line work easier */
+#define ALT_SINGLE_QUOTE ';'
+
 #define NAMEGEN_MAX_DEPTH  32 /* Cannot exceed bits in a long */
 
 /* Return codes */
@@ -334,6 +337,12 @@ static int namegen(char *dst, unsigned long len, const char *pattern, unsigned l
     for (; *pattern; pattern++) {
         unsigned long bit; /* Bit for current depth */
         int c = *pattern;
+
+        /* Replace alternate single quote character */
+        if (c == ALT_SINGLE_QUOTE) {
+            c = '\'';
+        }
+
         switch (c) {
             case '<':
                 if (++depth == NAMEGEN_MAX_DEPTH) {
