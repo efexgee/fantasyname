@@ -12,3 +12,6 @@ check: namegen
 
 clean:
 	rm -f namegen
+
+run: namegen
+	./namegen '!iM'

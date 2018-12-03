@@ -58,8 +58,7 @@
  * that something went wrong. Truncation occurs when DST was too short.
  * Pattern is validated even when the output has been truncated.
  */
-static int
-namegen(char *dst, unsigned long len, const char *pattern, unsigned long *seed);
+static int namegen(char *dst, unsigned long len, const char *pattern, unsigned long *seed);
 
 /* Implementation */
 
@@ -78,9 +77,7 @@ namegen(char *dst, unsigned long len, const char *pattern, unsigned long *seed);
 /* Return offsets table offset for C, or -1 if not special.
  * The return value is suitable for namegen_offsets().
  */
-static int
-namegen_special(int c)
-{
+static int namegen_special(int c) {
     static const signed char special[] = {
         -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
         -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -107,9 +104,7 @@ namegen_special(int c)
 /* Return offsets and number of offsets for special N.
  * Offsets point into namegen_argz.
  */
-static int
-namegen_offsets(int n, const short **offsets)
-{
+static int namegen_offsets(int n, const short **offsets) {
     static const short offsets_table[] = {
         0x0000, 0x0002, 0x0005, 0x0008, 0x000a, 0x000d, 0x0011, 0x0014,
         0x0017, 0x0019, 0x001c, 0x001e, 0x0020, 0x0022, 0x0024, 0x0026,
@@ -287,9 +282,7 @@ static const char namegen_argz[] = {
      0 , 'y',  0
 };
 
-static unsigned long
-namegen_rand32(unsigned long *s)
-{
+static unsigned long namegen_rand32(unsigned long *s) {
     unsigned long x = *s;
     x ^= x << 13;
     x ^= (x & 0xffffffffUL) >> 17;
@@ -297,17 +290,13 @@ namegen_rand32(unsigned long *s)
     return (*s = x) & 0xffffffffUL;
 }
 
-static int
-namegen_cap(int c, int capitalize)
-{
+static int namegen_cap(int c, int capitalize) {
     return capitalize && c >= 'a' && c <= 'z' ? c & ~0x20 : c;
 }
 
 /* Copy a random substitution for template C into P, but only before E.
  */
-static char *
-namegen_copy(char *p, char *e, int c, unsigned long *seed, int capitalize)
-{
+static char * namegen_copy(char *p, char *e, int c, unsigned long *seed, int capitalize) {
     int n = namegen_special(c);
     if (n == -1) {
         if (p != e)
@@ -327,9 +316,7 @@ namegen_copy(char *p, char *e, int c, unsigned long *seed, int capitalize)
     return p;
 }
 
-static int
-namegen(char *dst, unsigned long len, const char *pattern, unsigned long *seed)
-{
+static int namegen(char *dst, unsigned long len, const char *pattern, unsigned long *seed) {
     int depth = 0;               /* Current nesting depth */
     char *p = dst;               /* Current output pointer */
     char *e = dst + len;         /* Maxiumum output pointer */

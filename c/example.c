@@ -5,9 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define DEFAULT_NUM_NAMES 10
+
 static unsigned long
-hash32(unsigned long a)
-{
+hash32(unsigned long a) {
     a = a & 0xffffffffUL;
     a = (a ^ 61UL) ^ (a >> 16);
     a = (a + (a << 3)) & 0xffffffffUL;
@@ -36,9 +37,7 @@ hash32(unsigned long a)
         } \
     } while (0)
 
-static void
-tests(void)
-{
+static void tests(void) {
     int r;
     char buf[256];
     int count_pass = 0;
@@ -162,23 +161,25 @@ tests(void)
     exit(EXIT_SUCCESS);
 }
 
-int
-main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     int i;
-    int count = 1;
+    int count = DEFAULT_NUM_NAMES;
+    char *pattern;
     FILE *urandom;
     unsigned char randbuf[4];
     unsigned long seed[] = {0x8af611acUL};
 
     /* Parse command line arguments */
     if (argc < 2 || argc > 3) {
-        printf("Usage: %s <pattern> [num]\n", argv[0]);
-        printf("  pattern   template for names to generate\n");
+        printf("Usage: %s <num> <pattern>\n", argv[0]);
         printf("  num       number of names to generate\n");
+        printf("  pattern   template for names to generate\n");
         exit(EXIT_FAILURE);
+    } else if (argc == 2) {
+        pattern = argv[1];
     } else if (argc == 3) {
-        count = atoi(argv[2]);
+        count = atoi(argv[1]);
+        pattern = argv[2];
     }
 
     if (!strcmp(argv[1], "--test"))
@@ -207,7 +208,7 @@ main(int argc, char **argv)
     /* Generate some names */
     for (i = 0; i < count; i++) {
         char buf[256];
-        int r = namegen(buf, sizeof(buf), argv[1], seed);
+        int r = namegen(buf, sizeof(buf), pattern, seed);
         if (r == NAMEGEN_INVALID) {
             fprintf(stderr, "%s: invalid pattern\n", argv[0]);
             exit(EXIT_FAILURE);
